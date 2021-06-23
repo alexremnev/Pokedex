@@ -8,8 +8,8 @@ namespace Pokedex.Services.Models
         [JsonProperty(PropertyName = "name")]
         public string Name { get; set; }
 
-        [JsonProperty(PropertyName = "form_descriptions")]
-        public IList<FormsDescription> FormsDescription { get; set; }
+        [JsonProperty(PropertyName = "flavor_text_entries")]
+        public IList<FlavorTextEntry> FlavorTextEntries { get; set; }
 
         [JsonProperty(PropertyName = "habitat")]
         public Habitat Habitat { get; set; }

@@ -1,10 +1,10 @@
 ﻿using System.Threading.Tasks;
-using Pokedex.Services.Models;
+using Pokedex.Model;
 
 namespace Pokedex.Services
 {
     public interface IPokemonProvider
     {
-        Task<PokemonDetails> GetPokemonAsync(string name);
+        Task<Pokemon> GetPokemonAsync(string name);
     }
 }

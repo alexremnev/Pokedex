@@ -2,9 +2,9 @@
 
 namespace Pokedex.Services.Models
 {
-    public class FormsDescription
+    public class FlavorTextEntry
     {
-        [JsonProperty(PropertyName = "description")]
+        [JsonProperty(PropertyName = "flavor_text")]
         public string Description { get; set; }
     }
 }

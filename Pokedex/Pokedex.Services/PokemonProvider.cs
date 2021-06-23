@@ -1,39 +1,57 @@
-﻿using System;
+﻿using System.Linq;
+using System.Net;
 using System.Net.Http;
-using System.Text;
 using System.Threading.Tasks;
-using Newtonsoft.Json;
+using Microsoft.Extensions.Logging;
+using Pokedex.Model;
+using Pokedex.Services.Exceptions;
 using Pokedex.Services.Models;
 
 namespace Pokedex.Services
 {
     public class PokemonProvider : IPokemonProvider
     {
-        private readonly IAppConfiguration _appConfiguration;
         private readonly HttpClient _httpClient;
-        public PokemonProvider(IAppConfiguration appConfiguration, HttpClient httpClient)
+        private readonly ILogger<PokemonProvider> _logger;
+        private readonly string _apiEndpoint;
+
+        public PokemonProvider(HttpClient httpClient, ILogger<PokemonProvider> logger, string apiEndpoint)
         {
-            _appConfiguration = appConfiguration;
             _httpClient = httpClient;
+            _logger = logger;
+            _apiEndpoint = apiEndpoint;
         }
 
-        public async Task<PokemonDetails> GetPokemonAsync(string name)
+        public async Task<Pokemon> GetPokemonAsync(string name)
         {
-            var response = await _httpClient.GetAsync($"{_appConfiguration.ApiEndpoint}/{name}");
+            _logger.LogInformation($"Getting a Pokemon with name = {name}.");
+            var pokemonDetailsResponse = await _httpClient.GetAsync($"{_apiEndpoint}/{name.ToLower()}");
 
-            if (!response.IsSuccessStatusCode)
+            if (!pokemonDetailsResponse.IsSuccessStatusCode)
             {
-                throw new Exception($"Can not get a Pokemon with the name = {name}. {response.ReasonPhrase}");
+                _logger.LogError($"Can not get a Pokemon with the name = {name}. {pokemonDetailsResponse.ReasonPhrase}");
+
+                if (pokemonDetailsResponse.StatusCode == HttpStatusCode.NotFound)
+                {
+                    return null;
+                }
+
+                throw new ServiceUnavailableException($"Can not get a Pokemon with the name = {name}.");
             }
 
-            return await ReadResultAsync<PokemonDetails>(response);
-
+            var pokemonDetails = await Utils.ReadResultAsync<PokemonDetails>(pokemonDetailsResponse);
+            return ConvertToPokemon(pokemonDetails);
         }
 
-        private static async Task<T> ReadResultAsync<T>(HttpResponseMessage responseMessage)
+        private static Pokemon ConvertToPokemon(PokemonDetails pokemonDetails)
         {
-            var stringResult = await responseMessage.Content.ReadAsStringAsync();
-            return JsonConvert.DeserializeObject<T>(stringResult);
+            return new Pokemon
+            {
+                Name = pokemonDetails.Name,
+                Description = pokemonDetails.FlavorTextEntries?.FirstOrDefault()?.Description,
+                Habitat = pokemonDetails.Habitat?.Name,
+                IsLegendary = pokemonDetails.IsLegendary
+            };
         }
     }
 }
