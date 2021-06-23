@@ -1,7 +1,6 @@
 ﻿using System;
-using System.Net;
 
-namespace Pokedex.Services.Exceptions
+namespace Pokedex.Common.Exceptions
 {
     public class ServiceUnavailableException : Exception
     {

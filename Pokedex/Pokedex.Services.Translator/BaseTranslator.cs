@@ -1,8 +1,9 @@
 ﻿using System.Net.Http;
 using System.Threading.Tasks;
-using Pokedex.Services.Exceptions;
-using Pokedex.Services.Models;
-using static Pokedex.Services.Utils;
+using Pokedex.Common;
+using Pokedex.Common.Exceptions;
+using Pokedex.Services.Translator.Models;
+using static Pokedex.Common.Utils;
 
 namespace Pokedex.Services.Translator
 {
@@ -19,16 +20,16 @@ namespace Pokedex.Services.Translator
             _url = url;
         }
 
-        public async Task<string> Translate(string description)
+        public async Task<string> Translate(string value)
         {
-            var result = await _httpClient.PostAsync($"{_url}", ConvertToStringContent(new { text = description }));
+            var result = await _httpClient.PostAsync($"{_url}", content: ConvertToStringContent(new { text = value }));
 
             if (!result.IsSuccessStatusCode)
             {
                 throw new ServiceUnavailableException($"Can not translate using {Name} translator, {result.ReasonPhrase}");
             }
 
-            var translationResult = await ReadResultAsync<TranslationResult>(result);
+            var translationResult = await result.ReadResultAsync<TranslationResult>();
             return translationResult?.Contents?.Translated;
         }
     }

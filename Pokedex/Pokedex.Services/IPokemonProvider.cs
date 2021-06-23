@@ -1,5 +1,5 @@
 ﻿using System.Threading.Tasks;
-using Pokedex.Model;
+using Pokedex.Common;
 
 namespace Pokedex.Services
 {

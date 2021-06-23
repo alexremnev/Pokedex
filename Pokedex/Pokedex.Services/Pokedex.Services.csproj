@@ -9,7 +9,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Pokedex.Model\Pokedex.Model.csproj" />
+    <ProjectReference Include="..\Pokedex.Model\Pokedex.Common.csproj" />
+    <ProjectReference Include="..\Pokedex.Services.Translator\Pokedex.Services.Translator.csproj" />
   </ItemGroup>
 
   <ItemGroup>
