@@ -3,7 +3,7 @@ using System.Net;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
-using Pokedex.Services.Exceptions;
+using Pokedex.Common.Exceptions;
 
 namespace Pokedex.Api.Middleware
 {

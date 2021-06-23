@@ -1,4 +1,4 @@
-﻿namespace Pokedex.Services.Models
+﻿namespace Pokedex.Services.Translator.Models
 {
     public class Contents
     {

@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
-using Pokedex.Model;
+using Pokedex.Common;
 using Pokedex.Services.Translator;
 
 namespace Pokedex.Services
@@ -22,7 +22,7 @@ namespace Pokedex.Services
         {
             var pokemon = await _pokemonProvider.GetPokemonAsync(name);
 
-            if (!withStandardDescription)
+            if (pokemon != null &&!withStandardDescription)
             {
                 pokemon.Description = await GetDescriptionAsync(pokemon);
             }

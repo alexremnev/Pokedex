@@ -3,8 +3,8 @@ using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
-using Pokedex.Model;
-using Pokedex.Services.Exceptions;
+using Pokedex.Common;
+using Pokedex.Common.Exceptions;
 using Pokedex.Services.Models;
 
 namespace Pokedex.Services
@@ -40,7 +40,7 @@ namespace Pokedex.Services
                 throw new ServiceUnavailableException($"Can not get a Pokemon with the name = {name}.");
             }
 
-            var pokemonDetails = await Utils.ReadResultAsync<PokemonDetails>(pokemonDetailsResponse);
+            var pokemonDetails = await pokemonDetailsResponse.ReadResultAsync<PokemonDetails>();
             return ConvertToPokemon(pokemonDetails);
         }
 

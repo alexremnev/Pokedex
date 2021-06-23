@@ -3,11 +3,11 @@ using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 
-namespace Pokedex.Services
+namespace Pokedex.Common
 {
-    public class Utils
+    public static class Utils
     {
-        public static async Task<T> ReadResultAsync<T>(HttpResponseMessage responseMessage)
+        public static async Task<T> ReadResultAsync<T>(this HttpResponseMessage responseMessage)
         {
             var stringResult = await responseMessage.Content.ReadAsStringAsync();
             return JsonConvert.DeserializeObject<T>(stringResult);
@@ -16,7 +16,7 @@ namespace Pokedex.Services
         public static StringContent ConvertToStringContent(object value)
         {
             var content = JsonConvert.SerializeObject(value);
-            return new StringContent(content, Encoding.Unicode, "application/json");
+            return new StringContent(content, Encoding.UTF8, "application/json");
         }
     }
 }

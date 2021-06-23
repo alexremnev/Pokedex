@@ -1,4 +1,4 @@
-﻿namespace Pokedex.Services
+﻿namespace Pokedex.Services.Translator
 {
     public static class TranslatorNames
     {
