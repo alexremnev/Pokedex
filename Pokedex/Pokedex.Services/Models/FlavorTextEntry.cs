@@ -6,5 +6,7 @@ namespace Pokedex.Services.Models
     {
         [JsonProperty(PropertyName = "flavor_text")]
         public string Description { get; set; }
+
+        public Language Language { get; set; }
     }
 }

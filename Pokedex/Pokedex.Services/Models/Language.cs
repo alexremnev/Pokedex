@@ -1,6 +1,6 @@
 ﻿namespace Pokedex.Services.Models
 {
-    public class Habitat : NameEntity
+    public class Language : NameEntity
     {
     }
 }

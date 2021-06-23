@@ -14,6 +14,7 @@ namespace Pokedex.Services
         private readonly HttpClient _httpClient;
         private readonly ILogger<PokemonProvider> _logger;
         private readonly string _apiEndpoint;
+        private const string SupportedLanguage = "en";
 
         public PokemonProvider(HttpClient httpClient, ILogger<PokemonProvider> logger, string apiEndpoint)
         {
@@ -48,7 +49,7 @@ namespace Pokedex.Services
             return new Pokemon
             {
                 Name = pokemonDetails.Name,
-                Description = pokemonDetails.FlavorTextEntries?.FirstOrDefault()?.Description,
+                Description = pokemonDetails.FlavorTextEntries?.FirstOrDefault(x => x.Language?.Name == SupportedLanguage)?.Description,
                 Habitat = pokemonDetails.Habitat?.Name,
                 IsLegendary = pokemonDetails.IsLegendary
             };
