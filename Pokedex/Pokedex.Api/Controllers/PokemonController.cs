@@ -1,5 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
+﻿using System.Text.RegularExpressions;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
+using Pokedex.Services;
 
 namespace Pokedex.Api.Controllers
 {
@@ -7,17 +9,46 @@ namespace Pokedex.Api.Controllers
     [Route("[controller]")]
     public class PokemonController : ControllerBase
     {
-        private readonly ILogger<PokemonController> _logger;
+        private readonly IPokemonService _pokemonService;
 
-        public PokemonController(ILogger<PokemonController> logger)
+        public PokemonController(IPokemonService pokemonService)
         {
-            _logger = logger;
+            _pokemonService = pokemonService;
         }
 
-        [HttpGet]
-        public  IActionResult Get()
+        [HttpGet("{name}")]
+        public async Task<IActionResult> Get(string name)
         {
-            return Ok();
+            return await GetPokemonAsync(name, true);
+        }
+
+        [HttpGet("translated/{name}")]
+        public async Task<IActionResult> GetTranslated(string name)
+        {
+            return await GetPokemonAsync(name, false);
+        }
+
+        private async Task<IActionResult> GetPokemonAsync(string name, bool withStandardDescription)
+        {
+            if (!VerifyName(name))
+            {
+                return BadRequest("Only letters allowed");
+            }
+
+            var pokemon = await _pokemonService.GetPokemonAsync(name, withStandardDescription);
+
+            if (pokemon == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(pokemon);
+        }
+
+        private static bool VerifyName(string name)
+        {
+            //only letters allowed
+            return Regex.IsMatch(name, @"^[a-zA-Z]+$");
         }
     }
 }
