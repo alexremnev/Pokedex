@@ -2,4 +2,4 @@
 
 Possible improvements:
 - caching
-- add retry mechanism for getting pokemons or description translating
+- add a retry mechanism for getting pokemons or for description translation
