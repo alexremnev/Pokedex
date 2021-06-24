@@ -16,9 +16,9 @@ namespace Pokedex.Services
         private readonly string _apiEndpoint;
         private const string SupportedLanguage = "en";
 
-        public PokemonProvider(HttpClient httpClient, ILogger<PokemonProvider> logger, string apiEndpoint)
+        public PokemonProvider(IHttpClientFactory clientFactory, ILogger<PokemonProvider> logger, string apiEndpoint)
         {
-            _httpClient = httpClient;
+            _httpClient = clientFactory.CreateClient();
             _logger = logger;
             _apiEndpoint = apiEndpoint;
         }
