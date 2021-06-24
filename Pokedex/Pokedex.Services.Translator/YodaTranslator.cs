@@ -6,7 +6,7 @@ namespace Pokedex.Services.Translator
     {
         public override string Name => TranslatorNames.YodaTranslatorName;
 
-        public YodaTranslator(HttpClient httpClient, string url) : base(httpClient, url)
+        public YodaTranslator(IHttpClientFactory clientFactory, string url) : base(clientFactory, url)
         {
         }
     }

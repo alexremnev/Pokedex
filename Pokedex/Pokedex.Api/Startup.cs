@@ -25,13 +25,13 @@ namespace Pokedex.Api
         {
             var appConfiguration = Configuration.Get<AppConfiguration>();
 
-            services.AddHttpClient<IPokemonProvider, PokemonProvider>();
+            services.AddHttpClient();
 
-            services.AddScoped<IPokemonProvider>(ctx => new PokemonProvider(ctx.GetRequiredService<HttpClient>(), ctx.GetRequiredService<ILogger<PokemonProvider>>(), appConfiguration.ApiEndpoint));
+            services.AddScoped<IPokemonProvider>(ctx => new PokemonProvider(ctx.GetRequiredService<IHttpClientFactory>(), ctx.GetRequiredService<ILogger<PokemonProvider>>(), appConfiguration.ApiEndpoint));
 
             services.AddScoped<ITranslatorFactory, TranslatorFactory>();
-            services.AddScoped<ITranslator>(ctx => new ShakespeareTranslator(ctx.GetRequiredService<HttpClient>(), appConfiguration.ShakespeareTranslatorUrl));
-            services.AddScoped<ITranslator>(ctx => new YodaTranslator(ctx.GetRequiredService<HttpClient>(), appConfiguration.YodaTranslatorUrl));
+            services.AddScoped<ITranslator>(ctx => new ShakespeareTranslator(ctx.GetRequiredService<IHttpClientFactory>(), appConfiguration.ShakespeareTranslatorUrl));
+            services.AddScoped<ITranslator>(ctx => new YodaTranslator(ctx.GetRequiredService<IHttpClientFactory>(), appConfiguration.YodaTranslatorUrl));
 
             services.AddScoped<IPokemonService, PokemonService>();
 

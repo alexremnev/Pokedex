@@ -14,9 +14,9 @@ namespace Pokedex.Services.Translator
 
         public abstract string Name { get; }
 
-        protected BaseTranslator(HttpClient httpClient, string url)
+        protected BaseTranslator(IHttpClientFactory clientFactory, string url)
         {
-            _httpClient = httpClient;
+            _httpClient = clientFactory.CreateClient();
             _url = url;
         }
 
