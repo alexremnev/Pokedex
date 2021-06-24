@@ -1,9 +1,8 @@
 ﻿using System.Collections.Generic;
 using Moq;
-using Pokedex.Services.Translator;
 using Xunit;
 
-namespace Pokedex.Services.Tests
+namespace Pokedex.Services.Translator.Tests
 {
     public class TranslatorFactoryTests
     {
