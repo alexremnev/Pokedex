@@ -22,7 +22,7 @@ namespace Pokedex.Services.Translator
 
         public async Task<string> Translate(string value)
         {
-            var result = await _httpClient.PostAsync($"{_url}", content: ConvertToStringContent(new { text = value }));
+            var result = await _httpClient.PostAsync(_url, content: ConvertToStringContent(new { text = value }));
 
             if (!result.IsSuccessStatusCode)
             {
