@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using Pokedex.Common;
@@ -45,7 +46,10 @@ namespace Pokedex.Services
             }
 
             var pokemonDetails = await pokemonDetailsResponse.ReadResultAsync<PokemonDetails>();
-            return ConvertToPokemon(pokemonDetails);
+            var pokemon = ConvertToPokemon(pokemonDetails);
+
+            CleanDescription(pokemon);
+            return pokemon;
         }
 
         private static Pokemon ConvertToPokemon(PokemonDetails pokemonDetails)
@@ -57,6 +61,14 @@ namespace Pokedex.Services
                 Habitat = pokemonDetails.Habitat?.Name,
                 IsLegendary = pokemonDetails.IsLegendary
             };
+        }
+
+        private static void CleanDescription(Pokemon pokemon)
+        {
+            if (pokemon.Description != null)
+            {
+                pokemon.Description = Regex.Replace(pokemon.Description, @"(\n|\t|\f)", " ");
+            }
         }
     }
 }
