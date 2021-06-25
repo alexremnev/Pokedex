@@ -10,6 +10,9 @@ WORKDIR /src
 COPY ["Pokedex.Api/Pokedex.Api.csproj", "Pokedex.Api/"]
 RUN dotnet restore "Pokedex.Api/Pokedex.Api.csproj"
 COPY . .
+
+RUN dotnet test
+
 WORKDIR "/src/Pokedex.Api"
 RUN dotnet build "Pokedex.Api.csproj" -c Release -o /app/build
 
