@@ -1,0 +1,13 @@
+version: '3.7'
+services:
+  api:
+    build:
+      context: .
+      dockerfile: Pokedex.API/Docker/Dockerfile
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+    env_file:
+      - Pokedex.API/Docker/env_vars
+    ports:
+      - "5000:80"
+      - "5001:443"

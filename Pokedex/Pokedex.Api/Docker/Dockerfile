@@ -1,5 +1,3 @@
-#See https://aka.ms/containerfastmode to understand how Visual Studio uses this Dockerfile to build your images for faster debugging.
-
 FROM mcr.microsoft.com/dotnet/aspnet:5.0-buster-slim AS base
 WORKDIR /app
 EXPOSE 80
@@ -10,6 +8,10 @@ WORKDIR /src
 COPY ["Pokedex.Api/Pokedex.Api.csproj", "Pokedex.Api/"]
 RUN dotnet restore "Pokedex.Api/Pokedex.Api.csproj"
 COPY . .
+
+#Bdd tests use endpoind(https://api.funtranslations.com/) which has restriction(5 requests per hour) to get and translate pokemons. 
+#RUN dotnet test
+
 WORKDIR "/src/Pokedex.Api"
 RUN dotnet build "Pokedex.Api.csproj" -c Release -o /app/build
 
