@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.TestHost;
 using Microsoft.Extensions.Configuration;
 using Pokedex.Common;
 using Xunit;
+using static Pokedex.Common.Utils;
 
 namespace Pokedex.Api.Tests
 {
@@ -74,7 +75,7 @@ namespace Pokedex.Api.Tests
         [MultiAssert]
         public async Task Then_return_proper_model(string habitat, bool isLegendary)
         {
-            var model = await _response.Content.ReadAsJsonAsync<Pokemon>();
+            var model = await _response.ReadResultAsync<Pokemon>();
             Assert.Equal(_pokemonName, model.Name);
             Assert.NotNull(model.Description);
             Assert.Equal(habitat, model.Habitat);
