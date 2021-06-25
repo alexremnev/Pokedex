@@ -34,7 +34,7 @@ namespace Pokedex.Services.Tests
                     StatusCode = HttpStatusCode.OK,
                     Content = new StringContent(
 
-                        "{'name':'ditto', 'habitat': { 'name' : 'urban' }, 'flavor_text_entries': [{'flavor_text': 'Description.', 'language': {'name': 'en','url': 'https://url'},}], 'is_legendary': true}")
+                        "{'name':'ditto', 'habitat': { 'name' : 'urban' }, 'flavor_text_entries': [{'flavor_text': 'Description\n.', 'language': {'name': 'en','url': 'https://url'},}], 'is_legendary': true}")
                 });
             var client = new HttpClient(_mockHttpMessageHandler.Object);
             _httpClientFactory.Setup(_ => _.CreateClient(It.IsAny<string>())).Returns(client);
@@ -51,7 +51,7 @@ namespace Pokedex.Services.Tests
 
             // Assert
             Assert.Equal(pokemon.Name, ExpectedName.ToLower());
-            Assert.Equal("Description.", pokemon.Description);
+            Assert.Equal("Description .", pokemon.Description);
             Assert.Equal("urban", pokemon.Habitat);
             Assert.True(pokemon.IsLegendary);
         }
