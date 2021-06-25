@@ -1,5 +1,4 @@
-﻿using System.Text.RegularExpressions;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Pokedex.Services;
 
@@ -32,7 +31,7 @@ namespace Pokedex.Api.Controllers
         {
             if (!VerifyName(name))
             {
-                return BadRequest("Only letters allowed");
+                return BadRequest("Invalid name");
             }
 
             var pokemon = await _pokemonService.GetPokemonAsync(name, withStandardDescription);
@@ -47,8 +46,7 @@ namespace Pokedex.Api.Controllers
 
         private static bool VerifyName(string name)
         {
-            //only letters allowed
-            return Regex.IsMatch(name, @"^[a-zA-Z]+$");
+            return !string.IsNullOrWhiteSpace(name);
         }
     }
 }

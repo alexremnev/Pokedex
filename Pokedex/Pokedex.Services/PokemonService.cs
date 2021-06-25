@@ -22,7 +22,7 @@ namespace Pokedex.Services
         {
             var pokemon = await _pokemonProvider.GetPokemonAsync(name);
 
-            if (pokemon != null &&!withStandardDescription)
+            if (pokemon != null && !withStandardDescription)
             {
                 pokemon.Description = await GetDescriptionAsync(pokemon);
             }
@@ -32,13 +32,13 @@ namespace Pokedex.Services
 
         private async Task<string> GetDescriptionAsync(Pokemon pokemon)
         {
-            var translator = GetSpecificTranslator(pokemon);
-
-            if (pokemon.Description == null)
+            if (string.IsNullOrWhiteSpace(pokemon.Description))
             {
                 _logger.LogWarning($"Pokemon with name = {pokemon.Name} doesn't contain description.");
-                return "";
+                return pokemon.Description;
             }
+
+            var translator = GetSpecificTranslator(pokemon);
 
             return await translator.Translate(pokemon.Description);
         }

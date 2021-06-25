@@ -25,7 +25,11 @@ namespace Pokedex.Services
 
         public async Task<Pokemon> GetPokemonAsync(string name)
         {
-            _logger.LogInformation($"Getting a Pokemon with name = {name}.");
+            if (string.IsNullOrWhiteSpace(name))
+            {
+                return null;
+            }
+            _logger.LogInformation($"Getting a Pokemon with the name = {name}.");
             var pokemonDetailsResponse = await _httpClient.GetAsync($"{_apiEndpoint}/{name.ToLower()}");
 
             if (!pokemonDetailsResponse.IsSuccessStatusCode)
