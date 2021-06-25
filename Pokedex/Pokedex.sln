@@ -13,9 +13,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Pokedex.Services.Translator
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{21FD2708-CA4E-4941-B58E-0F9D6B1077C4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pokedex.Services.Tests", "Pokedex.Services.Tests\Pokedex.Services.Tests.csproj", "{C6CBC81E-DF35-4AF6-8FB0-090F2E72F268}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Pokedex.Services.Tests", "Pokedex.Services.Tests\Pokedex.Services.Tests.csproj", "{C6CBC81E-DF35-4AF6-8FB0-090F2E72F268}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pokedex.Services.Translator.Tests", "Pokedex.Services.Translator.Tests\Pokedex.Services.Translator.Tests.csproj", "{13B8A765-1F43-4BDA-ABD1-1F91EB94DADE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Pokedex.Services.Translator.Tests", "Pokedex.Services.Translator.Tests\Pokedex.Services.Translator.Tests.csproj", "{13B8A765-1F43-4BDA-ABD1-1F91EB94DADE}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "IntegrationTests", "IntegrationTests", "{0081B779-A688-4B22-BE30-25357206D90E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pokedex.Api.Tests", "Pokedex.Api.Tests\Pokedex.Api.Tests.csproj", "{025AE13D-B752-4B4B-AB41-4FACC1F0F872}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -47,6 +51,10 @@ Global
 		{13B8A765-1F43-4BDA-ABD1-1F91EB94DADE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{13B8A765-1F43-4BDA-ABD1-1F91EB94DADE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{13B8A765-1F43-4BDA-ABD1-1F91EB94DADE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{025AE13D-B752-4B4B-AB41-4FACC1F0F872}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{025AE13D-B752-4B4B-AB41-4FACC1F0F872}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{025AE13D-B752-4B4B-AB41-4FACC1F0F872}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{025AE13D-B752-4B4B-AB41-4FACC1F0F872}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -54,6 +62,8 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{C6CBC81E-DF35-4AF6-8FB0-090F2E72F268} = {21FD2708-CA4E-4941-B58E-0F9D6B1077C4}
 		{13B8A765-1F43-4BDA-ABD1-1F91EB94DADE} = {21FD2708-CA4E-4941-B58E-0F9D6B1077C4}
+		{0081B779-A688-4B22-BE30-25357206D90E} = {21FD2708-CA4E-4941-B58E-0F9D6B1077C4}
+		{025AE13D-B752-4B4B-AB41-4FACC1F0F872} = {0081B779-A688-4B22-BE30-25357206D90E}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {C5F997D1-2571-4330-954E-89BB0D3F5824}
