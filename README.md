@@ -11,6 +11,10 @@ Project deployment guide:
 2. Change current to /Pokedex (cd Pokedex)
 3. Use docker command to up and run the application - (docker-compose up")
 
+Example call:
+ GET http://localhost:5000/pokemon/mewtwo
+ GET http://localhost:5000/pokemon/translated/mewtwo
+
 Possible improvements:
 - caching
 - add a retry mechanism for getting pokemons or for description translation
