@@ -1,11 +1,12 @@
-﻿using System.Net;
+﻿using System;
+using System.Net;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
 using Moq;
 using Moq.Protected;
 using Newtonsoft.Json;
-using Pokedex.Common.Exceptions;
 using Xunit;
 
 namespace Pokedex.Services.Translator.Tests
@@ -13,6 +14,7 @@ namespace Pokedex.Services.Translator.Tests
     public class ShakespeareTranslatorTests
     {
         private readonly Mock<IHttpClientFactory> _httpClientFactory;
+        private readonly Mock<ILoggerFactory> _loggerFactory;
         private readonly Mock<HttpMessageHandler> _mockHttpMessageHandler = new Mock<HttpMessageHandler>();
         private const string ExpectedUrl = "http://shakespeare.test.com/";
 
@@ -21,6 +23,10 @@ namespace Pokedex.Services.Translator.Tests
         public ShakespeareTranslatorTests()
         {
             _httpClientFactory = new Mock<IHttpClientFactory>();
+            _loggerFactory = new Mock<ILoggerFactory>();
+            var logger = new Mock<ILogger>();
+
+            _loggerFactory.Setup(p => p.CreateLogger(It.IsAny<string>())).Returns(logger.Object);
 
             _mockHttpMessageHandler.Protected()
                 .Setup<Task<HttpResponseMessage>>("SendAsync", ItExpr.Is<HttpRequestMessage>(r =>
@@ -41,14 +47,14 @@ namespace Pokedex.Services.Translator.Tests
 
         private static string SerializeObject(string text)
         {
-            return JsonConvert.SerializeObject(new {text});
+            return JsonConvert.SerializeObject(new { text });
         }
 
         [Fact]
         public async Task GivenShakespeareTranslator_WhenTranslateAsync_ThenReturnsTranslation()
         {
             // Arrange
-            var shakespeareTranslator = new ShakespeareTranslator(_httpClientFactory.Object, ExpectedUrl);
+            var shakespeareTranslator = new ShakespeareTranslator(_httpClientFactory.Object, _loggerFactory.Object, ExpectedUrl);
 
             // Act
             var translate = await shakespeareTranslator.Translate(value);
@@ -77,7 +83,7 @@ namespace Pokedex.Services.Translator.Tests
                     )
                 });
 
-            var shakespeareTranslator = new ShakespeareTranslator(_httpClientFactory.Object, ExpectedUrl);
+            var shakespeareTranslator = new ShakespeareTranslator(_httpClientFactory.Object, _loggerFactory.Object, ExpectedUrl);
 
             // Act
             var translate = await shakespeareTranslator.Translate(value);
@@ -87,7 +93,7 @@ namespace Pokedex.Services.Translator.Tests
         }
 
         [Fact]
-        public async Task GivenShakespeareTranslator_WhenTranslateAsync_ThenReturnsServiceUnavailableException()
+        public async Task GivenShakespeareTranslator_WhenTranslateAsync_ThenReturnsStandardDescription()
         {
             // Arrange
             _mockHttpMessageHandler.Protected()
@@ -102,13 +108,13 @@ namespace Pokedex.Services.Translator.Tests
                     ReasonPhrase = "Error"
                 });
 
-            var shakespeareTranslator = new ShakespeareTranslator(_httpClientFactory.Object, ExpectedUrl);
+            var shakespeareTranslator = new ShakespeareTranslator(_httpClientFactory.Object, _loggerFactory.Object, ExpectedUrl);
 
             // Act
-            var exception = await Assert.ThrowsAsync<ServiceUnavailableException>(() => shakespeareTranslator.Translate(value));
+            var actual = await shakespeareTranslator.Translate(value);
 
             // Assert
-            Assert.Equal($"Can not translate using Shakespeare translator, Error", exception.Message);
+            Assert.Equal(value, actual);
         }
     }
 }

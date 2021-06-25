@@ -1,4 +1,5 @@
 ﻿using System.Net.Http;
+using Microsoft.Extensions.Logging;
 
 namespace Pokedex.Services.Translator
 {
@@ -6,7 +7,7 @@ namespace Pokedex.Services.Translator
     {
         public override string Name => TranslatorNames.YodaTranslatorName;
 
-        public YodaTranslator(IHttpClientFactory clientFactory, string url) : base(clientFactory, url)
+        public YodaTranslator(IHttpClientFactory clientFactory, ILoggerFactory loggerFactory, string url) : base(clientFactory, loggerFactory, url)
         {
         }
     }
