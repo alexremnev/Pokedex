@@ -1,0 +1,3 @@
+ApiEndpoint=https://pokeapi.co/api/v2/pokemon-species
+ShakespeareTranslatorUrl=https://api.funtranslations.com/translate/shakespeare.json
+YodaTranslatorUrl=https://api.funtranslations.com/translate/yoda.json
