@@ -31,13 +31,13 @@ namespace Pokedex.Services
                 return null;
             }
             _logger.LogInformation($"Getting a Pokemon with the name = {name}.");
-            var pokemonDetailsResponse = await _httpClient.GetAsync($"{_apiEndpoint}/{name.ToLower()}");
+            var pokemonResponse = await _httpClient.GetAsync($"{_apiEndpoint}/{name.ToLower()}");
 
-            if (!pokemonDetailsResponse.IsSuccessStatusCode)
+            if (!pokemonResponse.IsSuccessStatusCode)
             {
-                _logger.LogError($"Can not get a Pokemon with the name = {name}. {pokemonDetailsResponse.ReasonPhrase}");
+                _logger.LogError($"Can not get a Pokemon with the name = {name}. {pokemonResponse.ReasonPhrase}");
 
-                if (pokemonDetailsResponse.StatusCode == HttpStatusCode.NotFound)
+                if (pokemonResponse.StatusCode == HttpStatusCode.NotFound)
                 {
                     return null;
                 }
@@ -45,7 +45,7 @@ namespace Pokedex.Services
                 throw new ServiceUnavailableException($"Can not get a Pokemon with the name = {name}.");
             }
 
-            var pokemonDetails = await pokemonDetailsResponse.ReadResultAsync<PokemonDetails>();
+            var pokemonDetails = await pokemonResponse.ReadResultAsync<PokemonDetails>();
             var pokemon = ConvertToPokemon(pokemonDetails);
 
             CleanDescription(pokemon);

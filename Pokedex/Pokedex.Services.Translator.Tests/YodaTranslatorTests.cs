@@ -2,10 +2,10 @@
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
 using Moq;
 using Moq.Protected;
 using Newtonsoft.Json;
-using Pokedex.Common.Exceptions;
 using Xunit;
 
 namespace Pokedex.Services.Translator.Tests
@@ -13,6 +13,7 @@ namespace Pokedex.Services.Translator.Tests
     public class YodaTranslatorTests
     {
         private readonly Mock<IHttpClientFactory> _httpClientFactory;
+        private readonly Mock<ILoggerFactory> _loggerFactory;
         private readonly Mock<HttpMessageHandler> _mockHttpMessageHandler = new Mock<HttpMessageHandler>();
         private const string ExpectedUrl = "http://yoda.test.com/";
 
@@ -21,6 +22,10 @@ namespace Pokedex.Services.Translator.Tests
         public YodaTranslatorTests()
         {
             _httpClientFactory = new Mock<IHttpClientFactory>();
+            _loggerFactory = new Mock<ILoggerFactory>();
+            var logger = new Mock<ILogger>();
+
+            _loggerFactory.Setup(p => p.CreateLogger(It.IsAny<string>())).Returns(logger.Object);
 
             _mockHttpMessageHandler.Protected()
                 .Setup<Task<HttpResponseMessage>>("SendAsync", ItExpr.Is<HttpRequestMessage>(r =>
@@ -48,7 +53,7 @@ namespace Pokedex.Services.Translator.Tests
         public async Task GivenYodaTranslator_WhenTranslateAsync_ThenReturnsTranslation()
         {
             // Arrange
-            var yodaTranslator = new YodaTranslator(_httpClientFactory.Object, ExpectedUrl);
+            var yodaTranslator = new YodaTranslator(_httpClientFactory.Object, _loggerFactory.Object, ExpectedUrl);
 
             // Act
             var translate = await yodaTranslator.Translate(Value);
@@ -75,7 +80,7 @@ namespace Pokedex.Services.Translator.Tests
                     )
                 });
 
-            var yodaTranslator = new YodaTranslator(_httpClientFactory.Object, ExpectedUrl);
+            var yodaTranslator = new YodaTranslator(_httpClientFactory.Object, _loggerFactory.Object, ExpectedUrl);
 
             // Act
             var translate = await yodaTranslator.Translate(Value);
@@ -85,7 +90,7 @@ namespace Pokedex.Services.Translator.Tests
         }
 
         [Fact]
-        public async Task GivenYodaTranslator_WhenTranslateAsync_ThenReturnsServiceUnavailableException()
+        public async Task GivenYodaTranslator_WhenTranslateAsync_ThenReturnsStandardDescription()
         {
             // Arrange
             _mockHttpMessageHandler.Protected()
@@ -100,13 +105,13 @@ namespace Pokedex.Services.Translator.Tests
                     ReasonPhrase = "Error"
                 });
 
-            var yodaTranslator = new YodaTranslator(_httpClientFactory.Object, ExpectedUrl);
+            var yodaTranslator = new YodaTranslator(_httpClientFactory.Object, _loggerFactory.Object, ExpectedUrl);
 
             // Act
-            var exception = await Assert.ThrowsAsync<ServiceUnavailableException>(() => yodaTranslator.Translate(Value));
+            var actual = await yodaTranslator.Translate(Value);
 
             // Assert
-            Assert.Equal($"Can not translate using Yoda translator, Error", exception.Message);
+            Assert.Equal(Value, actual);
         }
     }
 }
